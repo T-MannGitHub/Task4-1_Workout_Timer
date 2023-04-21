@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Task4-1_Workout_Timer</string>
+
+    <string name="Start">Start</string>
+    <string name="Stop">Stop</string>
+    <string name="SetDuration">Set Duration</string>
+    <string name="RestDuration">Rest Period</string>
+    <string name="NumSets">Number of Sets</string>
+    <string name="Title">Workout Timer</string>
+</resources>
