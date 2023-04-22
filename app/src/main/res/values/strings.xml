@@ -11,4 +11,5 @@
     <string name="WorkPhase">Work</string>
     <string name="RestPhase">Rest</string>
     <string name="EndPhase">Congratulations!</string>
+    <string name="Reset">RESET</string>
 </resources>

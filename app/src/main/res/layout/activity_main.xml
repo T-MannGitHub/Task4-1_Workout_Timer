@@ -115,7 +115,7 @@
 
     <ToggleButton
         android:id="@+id/myStartStopButton"
-        android:layout_width="250dp"
+        android:layout_width="125dp"
         android:layout_height="64dp"
         android:layout_marginStart="80dp"
         android:layout_marginTop="27dp"
@@ -128,8 +128,28 @@
         android:textOn="@string/Stop"
         app:layout_constraintBottom_toTopOf="@+id/myTextViewPhase"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myTextViewNumSets" />
+
+    <Button
+        android:id="@+id/myResetButton"
+        android:layout_width="125dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="81dp"
+        android:layout_marginBottom="25dp"
+        android:background="#EFEEEE"
+        android:text="RESET"
+        android:textColor="@color/black"
+        app:backgroundTint="#70D8A8"
+        app:layout_constraintBottom_toTopOf="@+id/myTextViewPhase"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myTextViewNumSets"
+        app:layout_constraintVertical_bias="0.541"/>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/myProgressBar"

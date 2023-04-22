@@ -1,9 +1,7 @@
 package com.tmannapps.task4_1_workout_timer;
-
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -12,76 +10,46 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button myStartStopButton;
+    Button myStartStopButton, myResetButton;
     TextView myTextViewTitle, myTextViewSetDuration, myTextViewRestDuration, myTextViewRemainingTime, myTextViewNumSets, myTextViewPhase;
     EditText myEditTextSetDuration, myEditTextRestPeriod, myEditTextNumSets;
     ProgressBar myProgressBar;
-    int i = 1;
+    CountDownTimer workCountdownTimer;
+   // CountDownTimer restCountdownTimer;
+    Boolean timerRunning;
 
-    public void setValue () {
-    String setDurationStr = myEditTextSetDuration.getText().toString();
-    long setDurationLong = Integer.parseInt(setDurationStr)*1000;
-    new CountDownTimer(setDurationLong, 1000) {
-        //TODO click stop to stop timer mid way
-        //todo end of finish - reset i to 1 and stop process
-        public void onTick(long millisUntilFinished) {
-            NumberFormat f = new DecimalFormat("00");
-            long hour = (millisUntilFinished / 3600000) % 24;
-            long min = (millisUntilFinished / 60000) % 60;
-            long sec = (millisUntilFinished / 1000) % 60;
-            myTextViewPhase.setText(getString(R.string.WorkPhase));
-            myTextViewRemainingTime.setText(f.format(hour) + ":" + f.format(min) + ":" + f.format(sec));
-        }
-        public void onFinish() {
-            String numSetsStr = myEditTextNumSets.getText().toString();
-            int numSetsInt = Integer.parseInt(numSetsStr);
-            restValue();
-            if (numSetsInt > 1) {
-                //i = numSetsInt;
-                while (i < numSetsInt) {
-                    restValue();
-                    setValue();
-                    restValue();
-                    i += 1;
-                }
+
+    //tutorial for countdown timer found at https://www.geeksforgeeks.org/countdowntimer-in-android-with-example/
+    //tutorial for pause function from https://www.youtube.com/watch?v=MDuGwI6P-X8&t=92s
+
+  /*  public void setRestPhaseTimer() {
+        String restDurationStr = myEditTextRestPeriod.getText().toString();
+        long restDurationLong = Integer.parseInt(restDurationStr) * 1000;
+        new CountDownTimer(restDurationLong, 1000) {
+            public void onTick(long millisUntilFinished) {
+                NumberFormat f = new DecimalFormat("00");
+                long hour = (millisUntilFinished / 3600000) % 24;
+                long min = (millisUntilFinished / 60000) % 60;
+                long sec = (millisUntilFinished / 1000) % 60;
+                myTextViewPhase.setText(getString(R.string.RestPhase));
+                myTextViewRemainingTime.setText(f.format(hour) + ":" + f.format(min) + ":" + f.format(sec));
             }
-            myTextViewRemainingTime.setText(getString(R.string.endTimer));
-
-        }
-    }.start();
-}
-public void restValue () {
-    String restDurationStr = myEditTextRestPeriod.getText().toString();
-    long restDurationLong = Integer.parseInt(restDurationStr)*1000;
-    new CountDownTimer(restDurationLong, 1000) {
-        public void onTick(long millisUntilFinished) {
-            NumberFormat f = new DecimalFormat("00");
-            long hour = (millisUntilFinished / 3600000) % 24;
-            long min = (millisUntilFinished / 60000) % 60;
-            long sec = (millisUntilFinished / 1000) % 60;
-            myTextViewPhase.setText(getString(R.string.RestPhase));
-            myTextViewRemainingTime.setText(f.format(hour) + ":" + f.format(min) + ":" + f.format(sec));
-        }
-        public void onFinish() {
-            //myTextViewPhase.setText(getString(R.string.EndPhase));
-            //myTextViewRemainingTime.setText(getString(R.string.endTimer));
-        }
-    }.start();
-}
-
+            public void onFinish() {
+                //myTextViewPhase.setText(getString(R.string.EndPhase));
+                myTextViewRemainingTime.setText(getString(R.string.endTimer));
+            }
+        }.start();
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         myStartStopButton = findViewById(R.id.myStartStopButton);
         myTextViewTitle = findViewById(R.id.myTextViewTitle);
         myTextViewSetDuration = findViewById(R.id.myTextViewSetDuration);
@@ -93,32 +61,70 @@ public void restValue () {
         myEditTextRestPeriod = findViewById(R.id.myEditTextRestPeriod);
         myEditTextNumSets = findViewById(R.id.myEditTextNumSets);
         myProgressBar = findViewById(R.id.myProgressBar);
-
-
+        myResetButton = findViewById(R.id.myResetButton);
+        myResetButton.setBackgroundColor(Color.parseColor("FFD9DFDC"));
 
 
         myStartStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                //start and stop the timers as appropriate
-                //To update the UI with the current time remaining, you can use a Handler and a Runnable that is
-                //called periodically to update the TextViews and ProgressBar. You can also play a sound or
-                //vibrate the device when each phase ends to alert the user.
-
-                //TODO - add error handling for if no values entered
-
-                setValue();
-                i = 1;
-                myTextViewPhase.setText(getString(R.string.EndPhase));
-
-
-                //Workout period
-                //tutorial for countdown timer found at https://www.geeksforgeeks.org/countdowntimer-in-android-with-example/
-
-
+                if (timerRunning) {
+                    stopTimer();
+                } else {
+                        startWorkTimer();
+                    }
+                }
+            }
+            );
+        myResetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetTimer();
             }
         });
-    }
+        }
+
+        private void startWorkTimer() {
+            String setDurationStr = myEditTextSetDuration.getText().toString();
+            long setDurationLong = Integer.parseInt(setDurationStr) * 1000;
+            workCountdownTimer = new CountDownTimer(setDurationLong, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    NumberFormat f = new DecimalFormat("00");
+                    long hour = (millisUntilFinished / 3600000) % 24;
+                    long min = (millisUntilFinished/ 60000) % 60;
+                    long sec = (millisUntilFinished / 1000) % 60;
+                    myTextViewRemainingTime.setText(f.format(hour) + ":" + f.format(min) + ":" + f.format(sec));
+                    myTextViewPhase.setText(getString(R.string.WorkPhase));
+                    myResetButton.setBackgroundColor(Color.parseColor("FF70D8A8"));
+            }
+            public void onFinish() {
+                timerRunning = false;
+                myStartStopButton.setText(getString(R.string.Start));
+                myTextViewRemainingTime.setText(getString(R.string.endTimer));
+                //setRestPhaseTimer();
+            }
+        }.start();
+            timerRunning = true;
+            myStartStopButton.setText(getString(R.string.Stop));
+            myResetButton.setBackgroundColor(Color.parseColor("FFD9DFDC"));
+        }
+
+        private void stopTimer () {
+            workCountdownTimer.cancel();
+            timerRunning = false;
+            myStartStopButton.setText(getString(R.string.Start));
+            myResetButton.setBackgroundColor(Color.parseColor("FFD9DFDC"));
+        }
+
+        private void resetTimer () {
+            String setDurationStr = myEditTextSetDuration.getText().toString();
+            long setDurationLong = Integer.parseInt(setDurationStr) * 1000;
+            NumberFormat f = new DecimalFormat("00");
+            int hrs = (int) (setDurationLong/3600000) % 24;
+            int mins = (int) (setDurationLong/6000) % 60;
+            int sec = (int) (setDurationLong/1000) % 60;
+            myTextViewRemainingTime.setText(f.format(hrs) + ":" + f.format(mins) + ":" + f.format(sec));
+            myResetButton.setBackgroundColor(Color.parseColor("FFD9DFDC"));
+        }
 }
+
