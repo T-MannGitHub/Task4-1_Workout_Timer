@@ -3,8 +3,12 @@
 
     <string name="Start">Start</string>
     <string name="Stop">Stop</string>
-    <string name="SetDuration">Set Duration</string>
-    <string name="RestDuration">Rest Period</string>
+    <string name="SetDuration">Set Duration (sec)</string>
+    <string name="RestDuration">Rest Period (sec)</string>
     <string name="NumSets">Number of Sets</string>
     <string name="Title">Workout Timer</string>
+    <string name="endTimer">00:00:00</string>
+    <string name="WorkPhase">Work</string>
+    <string name="RestPhase">Rest</string>
+    <string name="EndPhase">Congratulations!</string>
 </resources>
