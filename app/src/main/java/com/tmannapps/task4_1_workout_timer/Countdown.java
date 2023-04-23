@@ -62,12 +62,14 @@ public class Countdown extends AppCompatActivity {
             }
         }
         );
-/*        myResetButton.setOnClickListener(new View.OnClickListener() {
+        myResetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 resetTimer();
+                workCountdownTimer.cancel();
+                startWorkTimer();
             }
-        });*/
+        });
         }
         private void startWorkTimer() {
         try {
@@ -141,8 +143,6 @@ public class Countdown extends AppCompatActivity {
     private void pauseTimer() {
         try {
             //pause function not working in rest phase
-            resting = true;
-
             workCountdownTimer.cancel();
             timerRunning = false;
             myStartStopButton.setText(getString(R.string.Start));
@@ -168,13 +168,7 @@ public class Countdown extends AppCompatActivity {
 
     }
         private void resetTimer () {
-
-            NumberFormat f = new DecimalFormat("00");
-            int hrs = (int) (timeLeft/3600000) % 24;
-            int mins = (int) (timeLeft/6000) % 60;
-            int sec = (int) (timeLeft/1000) % 60;
-            myTextViewRemainingTime.setText(f.format(hrs) + ":" + f.format(mins) + ":" + f.format(sec));
-            myResetButton.setBackgroundColor(Color.GREEN);
+            i = 0;
         }
 
 }
