@@ -27,24 +27,6 @@ public class MainActivity extends AppCompatActivity {
     //tutorial for countdown timer found at https://www.geeksforgeeks.org/countdowntimer-in-android-with-example/
     //tutorial for pause function from https://www.youtube.com/watch?v=MDuGwI6P-X8&t=92s
 
-  /*  public void setRestPhaseTimer() {
-        String restDurationStr = myEditTextRestPeriod.getText().toString();
-        long restDurationLong = Integer.parseInt(restDurationStr) * 1000;
-        new CountDownTimer(restDurationLong, 1000) {
-            public void onTick(long millisUntilFinished) {
-                NumberFormat f = new DecimalFormat("00");
-                long hour = (millisUntilFinished / 3600000) % 24;
-                long min = (millisUntilFinished / 60000) % 60;
-                long sec = (millisUntilFinished / 1000) % 60;
-                myTextViewPhase.setText(getString(R.string.RestPhase));
-                myTextViewRemainingTime.setText(f.format(hour) + ":" + f.format(min) + ":" + f.format(sec));
-            }
-            public void onFinish() {
-                //myTextViewPhase.setText(getString(R.string.EndPhase));
-                myTextViewRemainingTime.setText(getString(R.string.endTimer));
-            }
-        }.start();
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +46,14 @@ public class MainActivity extends AppCompatActivity {
         myResetButton = findViewById(R.id.myResetButton);
         myResetButton.setBackgroundColor(Color.parseColor("FFD9DFDC"));
 
+        timerRunning = false;
+
 
         myStartStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (timerRunning) {
-                    stopTimer();
+                if (!timerRunning) {
+                    startWorkTimer();
                 } else {
                         startWorkTimer();
                     }

@@ -6,4 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".Countdown">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="272dp"
+        android:layout_height="20dp"
+        tools:layout_editor_absoluteX="69dp"
+        tools:layout_editor_absoluteY="59dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
