@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     int restInput;
     int setsInput;
 
-    //String numSetsString;
+    String numSetsString;
 
     //tutorial for countdown timer found at https://www.geeksforgeeks.org/countdowntimer-in-android-with-example/
     //tutorial for pause function from https://www.youtube.com/watch?v=MDuGwI6P-X8&t=92s
@@ -34,14 +34,14 @@ public class MainActivity extends AppCompatActivity {
             long restDurationLong = Integer.parseInt(restDurationStr) * 1000;
             restInput = Integer.parseInt(restDurationStr);
 
-            //numSetsString = myEditTextNumSets.getText().toString();
+            numSetsString = myEditTextNumSets.getText().toString();
             setsInput = myEditTextNumSets.getInputType();
 
 
             Intent intentGoQueen = new Intent(this, Countdown.class);
             intentGoQueen.putExtra("workDuration", workDurationLong);
             intentGoQueen.putExtra("restDuration", restDurationLong);
-            //intentGoQueen.putExtra("numSets", numSetsString);
+            intentGoQueen.putExtra("numSets", numSetsString);
             startActivity(intentGoQueen);
         } catch (Exception e) {
             Toast.makeText(MainActivity.this, "Please input values", Toast.LENGTH_SHORT).show();

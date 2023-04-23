@@ -18,12 +18,15 @@ import java.text.NumberFormat;
 public class Countdown extends AppCompatActivity {
     Button myStartStopButton, myResetButton, myButtonReturnMain;
     ProgressBar myProgressBar;
-    CountDownTimer workCountdownTimer;
+    CountDownTimer workCountdownTimer, restCountdownTimer;
     // CountDownTimer restCountdownTimer;
     Boolean timerRunning = false;
-
+    Boolean resting = true;
+    public static long timeLeft;
+    public static long restLeft;
+    int i = 0; //work iteration variable
+    int j = 0; //rest iteration variable
     TextView myTextViewRemainingTime, myTextViewPhase;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +52,13 @@ public class Countdown extends AppCompatActivity {
                 try {
                     if (!timerRunning) {
                         startWorkTimer();
+                        i += 1;
                     } else {
                         pauseTimer();
                     }
                 } catch (Exception e) {
                     Toast.makeText(Countdown.this, "error in StartStopOnClick", Toast.LENGTH_SHORT).show();
                 }
-
             }
         }
         );
@@ -68,12 +71,16 @@ public class Countdown extends AppCompatActivity {
         }
         private void startWorkTimer() {
         try {
-            // get intent from here for workdurationlong
-            Intent workIntent = getIntent();
-            final long workDurationLong = workIntent.getLongExtra("workDuration", 0);
-            workCountdownTimer = new CountDownTimer(workDurationLong, 1000) {
+            // get value from main
+            //if the time has previously been started and not finished, don't reset the value
+            if (i == 0) {
+                Intent workIntent = getIntent();
+                final long[] workDurationLong = {workIntent.getLongExtra("workDuration", 0)};
+                timeLeft = workDurationLong[0];
+            }
+            workCountdownTimer = new CountDownTimer(timeLeft, 1000) {
                 public void onTick(long millisUntilFinished) {
-                    /*workDurationLong = millisUntilFinished;*/
+                    timeLeft = millisUntilFinished;
                     NumberFormat f = new DecimalFormat("00");
                     long hour = (millisUntilFinished / 3600000) % 24;
                     long min = (millisUntilFinished/ 60000) % 60;
@@ -86,11 +93,12 @@ public class Countdown extends AppCompatActivity {
                     myStartStopButton.setText(getString(R.string.Start));
                     myTextViewRemainingTime.setText(getString(R.string.endTimer));
                     setRestPhaseTimer();
+                    i = 0;
                 }
             }.start();
             timerRunning = true;
             myStartStopButton.setText(getString(R.string.Stop));
-            myResetButton.setBackgroundColor(Color.GREEN);
+            myResetButton.setBackgroundColor(Color.GRAY);
         } catch (Exception e) {
             Toast.makeText(Countdown.this, "Error in startWorkTimer()", Toast.LENGTH_SHORT).show();
         }
@@ -98,22 +106,32 @@ public class Countdown extends AppCompatActivity {
     }
     public void setRestPhaseTimer() {
         try {
-        // get intent from here for rest
-        Intent restIntent = getIntent();
-        long restDurationLong = restIntent.getLongExtra("restDuration", 0);
-        new CountDownTimer(restDurationLong, 1000) {
+            if (j == 0) {
+                // get intent from here for rest
+                Intent restIntent = getIntent();
+                final long[] restDurationLong = {restIntent.getLongExtra("restDuration", 0)};
+                restLeft = restDurationLong[0];
+            }
+        restCountdownTimer = new CountDownTimer(restLeft, 1000) {
             public void onTick(long millisUntilFinished) {
-                NumberFormat f = new DecimalFormat("00");
-                long hour = (millisUntilFinished / 3600000) % 24;
-                long min = (millisUntilFinished / 60000) % 60;
-                long sec = (millisUntilFinished / 1000) % 60;
+                restLeft = millisUntilFinished;
+                updateRestTimer();
                 myTextViewPhase.setText(getString(R.string.RestPhase));
+                j += 1;
+            }
+            public void updateRestTimer () {
+                NumberFormat f = new DecimalFormat("00");
+                long hour = (restLeft / 3600000) % 24;
+                long min = (restLeft / 60000) % 60;
+                long sec = (restLeft / 1000) % 60;
                 myTextViewRemainingTime.setText(f.format(hour) + ":" + f.format(min) + ":" + f.format(sec));
             }
+
             public void onFinish() {
-                //myTextViewPhase.setText(getString(R.string.EndPhase));
+                myTextViewPhase.setText(getString(R.string.EndPhase));
                 myTextViewRemainingTime.setText(getString(R.string.endTimer));
                 timerRunning = false;
+                j = 0;
             }
         }.start(); }
         catch (Exception e) {
@@ -122,10 +140,18 @@ public class Countdown extends AppCompatActivity {
     }
     private void pauseTimer() {
         try {
-            //workCountdownTimer.cancel();
+            //pause function not working in rest phase
+            resting = true;
+
+            workCountdownTimer.cancel();
             timerRunning = false;
             myStartStopButton.setText(getString(R.string.Start));
-            myResetButton.setBackgroundColor(Color.GREEN);
+            myResetButton.setBackgroundColor(Color.GRAY);
+            NumberFormat f = new DecimalFormat("00");
+            long hour = (timeLeft / 3600000) % 24;
+            long min = (timeLeft / 60000) % 60;
+            long sec = (timeLeft / 1000) % 60;
+            myTextViewRemainingTime.setText(f.format(hour) + ":" + f.format(min) + ":" + f.format(sec));
         } catch (Exception e) {
             Toast.makeText(Countdown.this, "error in pauseTiemr()", Toast.LENGTH_SHORT).show();
         }
@@ -141,15 +167,14 @@ public class Countdown extends AppCompatActivity {
         }
 
     }
-        /*private void resetTimer () {
-            String setDurationStr = myEditTextSetDuration.getText().toString();
-            long setDurationLong = Integer.parseInt(setDurationStr) * 1000;
+        private void resetTimer () {
+
             NumberFormat f = new DecimalFormat("00");
-            int hrs = (int) (setDurationLong/3600000) % 24;
-            int mins = (int) (setDurationLong/6000) % 60;
-            int sec = (int) (setDurationLong/1000) % 60;
+            int hrs = (int) (timeLeft/3600000) % 24;
+            int mins = (int) (timeLeft/6000) % 60;
+            int sec = (int) (timeLeft/1000) % 60;
             myTextViewRemainingTime.setText(f.format(hrs) + ":" + f.format(mins) + ":" + f.format(sec));
-            myResetButton.setBackgroundColor(Color.parseColor("FFD9DFDC"));
-        }*/
+            myResetButton.setBackgroundColor(Color.GREEN);
+        }
 
 }
