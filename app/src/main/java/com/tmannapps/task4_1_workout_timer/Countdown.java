@@ -70,17 +70,17 @@ public class Countdown extends AppCompatActivity {
         try {
             // get intent from here for workdurationlong
             Intent workIntent = getIntent();
-            final long[] workDurationLong = {workIntent.getLongExtra("workDuration", 0)};
-            workCountdownTimer = new CountDownTimer(workDurationLong[0], 1000) {
+            final long workDurationLong = workIntent.getLongExtra("workDuration", 0);
+            workCountdownTimer = new CountDownTimer(workDurationLong, 1000) {
                 public void onTick(long millisUntilFinished) {
-                    workDurationLong[0] = millisUntilFinished;
+                    /*workDurationLong = millisUntilFinished;*/
                     NumberFormat f = new DecimalFormat("00");
                     long hour = (millisUntilFinished / 3600000) % 24;
                     long min = (millisUntilFinished/ 60000) % 60;
                     long sec = (millisUntilFinished / 1000) % 60;
                     myTextViewRemainingTime.setText(f.format(hour) + ":" + f.format(min) + ":" + f.format(sec));
                     myTextViewPhase.setText(getString(R.string.WorkPhase));
-                    myResetButton.setBackgroundColor(Color.parseColor("FF70D8A8"));
+                    myResetButton.setBackgroundColor(Color.GREEN);
                 }
                 public void onFinish() {
                     myStartStopButton.setText(getString(R.string.Start));
@@ -90,7 +90,7 @@ public class Countdown extends AppCompatActivity {
             }.start();
             timerRunning = true;
             myStartStopButton.setText(getString(R.string.Stop));
-            myResetButton.setBackgroundColor(Color.parseColor("FFD9DFDC"));
+            myResetButton.setBackgroundColor(Color.GREEN);
         } catch (Exception e) {
             Toast.makeText(Countdown.this, "Error in startWorkTimer()", Toast.LENGTH_SHORT).show();
         }
@@ -125,7 +125,7 @@ public class Countdown extends AppCompatActivity {
             //workCountdownTimer.cancel();
             timerRunning = false;
             myStartStopButton.setText(getString(R.string.Start));
-            myResetButton.setBackgroundColor(Color.parseColor("FFD9DFDC"));
+            myResetButton.setBackgroundColor(Color.GREEN);
         } catch (Exception e) {
             Toast.makeText(Countdown.this, "error in pauseTiemr()", Toast.LENGTH_SHORT).show();
         }

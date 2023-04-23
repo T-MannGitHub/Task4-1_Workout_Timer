@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     //tutorial for pause function from https://www.youtube.com/watch?v=MDuGwI6P-X8&t=92s
     public void goQueen () {
         try {
-            /*String workDurationStr = myEditTextWorkDuration.getText().toString();
+            String workDurationStr = myEditTextWorkDuration.getText().toString();
             long workDurationLong = Integer.parseInt(workDurationStr) * 1000;
             workInput = Integer.parseInt(workDurationStr);
 
@@ -35,16 +35,16 @@ public class MainActivity extends AppCompatActivity {
             restInput = Integer.parseInt(restDurationStr);
 
             //numSetsString = myEditTextNumSets.getText().toString();
-            setsInput = myEditTextNumSets.getInputType();*/
+            setsInput = myEditTextNumSets.getInputType();
 
 
             Intent intentGoQueen = new Intent(this, Countdown.class);
-            /*intentGoQueen.putExtra("workDuration", workDurationLong);
-            intentGoQueen.putExtra("restDuration", restDurationLong);*/
+            intentGoQueen.putExtra("workDuration", workDurationLong);
+            intentGoQueen.putExtra("restDuration", restDurationLong);
             //intentGoQueen.putExtra("numSets", numSetsString);
             startActivity(intentGoQueen);
         } catch (Exception e) {
-            Toast.makeText(MainActivity.this, "error in goQueen()", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Please input values", Toast.LENGTH_SHORT).show();
         }
     }
 
