@@ -1,114 +1,109 @@
 package com.tmannapps.task4_1_workout_timer;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button myStartStopButton, myResetButton;
-    TextView myTextViewTitle, myTextViewSetDuration, myTextViewRestDuration, myTextViewRemainingTime, myTextViewNumSets, myTextViewPhase;
-    EditText myEditTextSetDuration, myEditTextRestPeriod, myEditTextNumSets;
-    ProgressBar myProgressBar;
-    CountDownTimer workCountdownTimer;
-   // CountDownTimer restCountdownTimer;
-    Boolean timerRunning;
+    Button myGoQueenButton;
+    TextView myTextViewTitle, myTextViewWorkDuration, myTextViewRestDuration,  myTextViewNumSets;
+    EditText myEditTextWorkDuration, myEditTextRestPeriod, myEditTextNumSets;
 
+
+    int workInput;
+    int restInput;
+    int setsInput;
+
+    //String numSetsString;
 
     //tutorial for countdown timer found at https://www.geeksforgeeks.org/countdowntimer-in-android-with-example/
     //tutorial for pause function from https://www.youtube.com/watch?v=MDuGwI6P-X8&t=92s
+    public void goQueen () {
+        try {
+            /*String workDurationStr = myEditTextWorkDuration.getText().toString();
+            long workDurationLong = Integer.parseInt(workDurationStr) * 1000;
+            workInput = Integer.parseInt(workDurationStr);
 
+            String restDurationStr = myEditTextRestPeriod.getText().toString();
+            long restDurationLong = Integer.parseInt(restDurationStr) * 1000;
+            restInput = Integer.parseInt(restDurationStr);
+
+            //numSetsString = myEditTextNumSets.getText().toString();
+            setsInput = myEditTextNumSets.getInputType();*/
+
+
+            Intent intentGoQueen = new Intent(this, Countdown.class);
+            /*intentGoQueen.putExtra("workDuration", workDurationLong);
+            intentGoQueen.putExtra("restDuration", restDurationLong);*/
+            //intentGoQueen.putExtra("numSets", numSetsString);
+            startActivity(intentGoQueen);
+        } catch (Exception e) {
+            Toast.makeText(MainActivity.this, "error in goQueen()", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        myStartStopButton = findViewById(R.id.myStartStopButton);
+
         myTextViewTitle = findViewById(R.id.myTextViewTitle);
-        myTextViewSetDuration = findViewById(R.id.myTextViewSetDuration);
+        myTextViewWorkDuration = findViewById(R.id.myTextViewWorkDuration);
         myTextViewRestDuration = findViewById(R.id.myTextViewRestDuration);
         myTextViewNumSets = findViewById(R.id.myTextViewNumSets);
-        myTextViewRemainingTime = findViewById(R.id.myTextViewRemainingTime);
-        myTextViewPhase = findViewById(R.id.myTextViewPhase);
-        myEditTextSetDuration = findViewById(R.id.myEditTextSetDuration);
+
+        myGoQueenButton = findViewById(R.id.myGoButton);
+        myGoQueenButton.setText(getString(R.string.GoMainToCountdown));
+
+        myEditTextWorkDuration = findViewById(R.id.myEditTextWorkDuration);
         myEditTextRestPeriod = findViewById(R.id.myEditTextRestPeriod);
         myEditTextNumSets = findViewById(R.id.myEditTextNumSets);
-        myProgressBar = findViewById(R.id.myProgressBar);
-        myResetButton = findViewById(R.id.myResetButton);
-        myResetButton.setBackgroundColor(Color.parseColor("FFD9DFDC"));
-
-        timerRunning = false;
 
 
-        myStartStopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!timerRunning) {
-                    startWorkTimer();
-                } else {
-                        startWorkTimer();
-                    }
-                }
-            }
-            );
-        myResetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resetTimer();
+        myGoQueenButton.setOnClickListener(v -> {
+            try {
+                goQueen();
+//                workInput();
+//                restInput();
+//                setsInput();
+            } catch (Exception e) {
+                Toast.makeText(MainActivity.this, "error in QueenOnClick", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    // sets the number of sets to an integer and to a long depending what we need
+   /* private void workInput () {
+        try {
+            String workDurationStr = myEditTextWorkDuration.getText().toString();
+            long workDurationLong = Integer.parseInt(workDurationStr) * 1000L;
+            workInput = Integer.parseInt(workDurationStr);
+
+        } catch (Exception e) {
+            Toast.makeText(MainActivity.this, "error in WorkInput()", Toast.LENGTH_SHORT).show();
         }
 
-        private void startWorkTimer() {
-            String setDurationStr = myEditTextSetDuration.getText().toString();
-            long setDurationLong = Integer.parseInt(setDurationStr) * 1000;
-            workCountdownTimer = new CountDownTimer(setDurationLong, 1000) {
-                public void onTick(long millisUntilFinished) {
-                    NumberFormat f = new DecimalFormat("00");
-                    long hour = (millisUntilFinished / 3600000) % 24;
-                    long min = (millisUntilFinished/ 60000) % 60;
-                    long sec = (millisUntilFinished / 1000) % 60;
-                    myTextViewRemainingTime.setText(f.format(hour) + ":" + f.format(min) + ":" + f.format(sec));
-                    myTextViewPhase.setText(getString(R.string.WorkPhase));
-                    myResetButton.setBackgroundColor(Color.parseColor("FF70D8A8"));
-            }
-            public void onFinish() {
-                timerRunning = false;
-                myStartStopButton.setText(getString(R.string.Start));
-                myTextViewRemainingTime.setText(getString(R.string.endTimer));
-                //setRestPhaseTimer();
-            }
-        }.start();
-            timerRunning = true;
-            myStartStopButton.setText(getString(R.string.Stop));
-            myResetButton.setBackgroundColor(Color.parseColor("FFD9DFDC"));
-        }
+    }*/
 
-        private void stopTimer () {
-            workCountdownTimer.cancel();
-            timerRunning = false;
-            myStartStopButton.setText(getString(R.string.Start));
-            myResetButton.setBackgroundColor(Color.parseColor("FFD9DFDC"));
-        }
+    // sets the rest duration to an integer and to a long depending what we need
+/*    private void restInput () {
+        String restDurationStr = myEditTextRestPeriod.getText().toString();
+        long restDurationLong = Integer.parseInt(restDurationStr) * 1000L;
+        restInput = Integer.parseInt(restDurationStr);
 
-        private void resetTimer () {
-            String setDurationStr = myEditTextSetDuration.getText().toString();
-            long setDurationLong = Integer.parseInt(setDurationStr) * 1000;
-            NumberFormat f = new DecimalFormat("00");
-            int hrs = (int) (setDurationLong/3600000) % 24;
-            int mins = (int) (setDurationLong/6000) % 60;
-            int sec = (int) (setDurationLong/1000) % 60;
-            myTextViewRemainingTime.setText(f.format(hrs) + ":" + f.format(mins) + ":" + f.format(sec));
-            myResetButton.setBackgroundColor(Color.parseColor("FFD9DFDC"));
-        }
+    }*/
+
+    // sets the number of sets to a string and an int
+/*    private void setsInput () {
+        setsInput = myEditTextNumSets.getInputType();
+
+
+    }*/
+
 }
-

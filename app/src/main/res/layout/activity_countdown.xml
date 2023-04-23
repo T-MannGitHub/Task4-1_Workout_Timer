@@ -6,11 +6,74 @@
     android:layout_height="match_parent"
     tools:context=".Countdown">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="272dp"
-        android:layout_height="20dp"
-        tools:layout_editor_absoluteX="69dp"
-        tools:layout_editor_absoluteY="59dp" />
+    <Button
+        android:id="@+id/myResetButton"
+        android:layout_width="120dp"
+        android:layout_height="58dp"
+        android:background="#EFEEEE"
+        android:text="RESET"
+        android:textColor="@color/black"
+        app:backgroundTint="#70D8A8"
+        tools:layout_editor_absoluteX="231dp"
+        tools:layout_editor_absoluteY="128dp" />
+
+    <ToggleButton
+        android:id="@+id/myStartStopButton"
+        android:layout_width="125dp"
+        android:layout_height="64dp"
+        android:checked="false"
+        android:text="ToggleButton"
+        android:textColor="@color/black"
+        android:textOff="@string/Start"
+        android:textOn="@string/Stop"
+        tools:layout_editor_absoluteX="52dp"
+        tools:layout_editor_absoluteY="122dp" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/myProgressBar"
+        android:layout_width="231dp"
+        android:layout_height="3dp"
+        android:layout_marginStart="98dp"
+        android:layout_marginTop="55dp"
+        android:layout_marginEnd="82dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/myTextViewRemainingTime"
+        android:layout_width="250dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="81dp"
+        android:text=""
+        android:textAlignment="center"
+        android:textSize="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="337dp" />
+
+    <TextView
+        android:id="@+id/myTextViewPhase"
+        android:layout_width="350dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="81dp"
+        android:gravity="center"
+        android:textColor="@color/pink"
+        android:textSize="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="235dp" />
+
+    <Button
+        android:id="@+id/myButtonReturnMain"
+        android:layout_width="132dp"
+        android:layout_height="81dp"
+        android:onClick="returnToMain"
+        android:text="Button"
+        tools:layout_editor_absoluteX="145dp"
+        tools:layout_editor_absoluteY="622dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

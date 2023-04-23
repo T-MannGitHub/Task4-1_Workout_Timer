@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Task4-1_Workout_Timer</string>
 
-    <string name="Start">Start</string>
-    <string name="Stop">Stop</string>
-    <string name="SetDuration">Set Duration (sec)</string>
+    <string name="Start">START</string>
+    <string name="Stop">STOP</string>
+    <string name="WorkDuration">Work Duration (sec)</string>
     <string name="RestDuration">Rest Period (sec)</string>
     <string name="NumSets">Number of Sets</string>
     <string name="Title">Workout Timer</string>
@@ -12,4 +12,6 @@
     <string name="RestPhase">Rest</string>
     <string name="EndPhase">Congratulations!</string>
     <string name="Reset">RESET</string>
+    <string name="GoMainToCountdown">GO QUEEN!</string>
+    <string name="GoCountdownToMain">Make it harder!</string>
 </resources>

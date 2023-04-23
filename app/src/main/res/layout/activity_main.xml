@@ -19,7 +19,7 @@
         android:gravity="center"
         android:text="@string/Title"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/myTextViewSetDuration"
+        app:layout_constraintBottom_toTopOf="@+id/myTextViewWorkDuration"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +37,7 @@
         app:layout_constraintBottom_toTopOf="@+id/myTextViewNumSets"
         app:layout_constraintEnd_toStartOf="@+id/myEditTextRestPeriod"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myTextViewSetDuration" />
+        app:layout_constraintTop_toBottomOf="@+id/myTextViewWorkDuration" />
 
     <TextView
         android:id="@+id/myTextViewNumSets"
@@ -45,11 +45,9 @@
         android:layout_height="50dp"
         android:layout_marginStart="9dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="14dp"
         android:gravity="bottom|left"
         android:text="@string/NumSets"
         android:textAlignment="gravity"
-        app:layout_constraintBottom_toTopOf="@+id/myStartStopButton"
         app:layout_constraintEnd_toStartOf="@+id/myEditTextNumSets"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myTextViewRestDuration" />
@@ -67,10 +65,10 @@
         app:layout_constraintBottom_toTopOf="@+id/myEditTextNumSets"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/myTextViewRestDuration"
-        app:layout_constraintTop_toBottomOf="@+id/myEditTextSetDuration" />
+        app:layout_constraintTop_toBottomOf="@+id/myEditTextWorkDuration" />
 
     <EditText
-        android:id="@+id/myEditTextSetDuration"
+        android:id="@+id/myEditTextWorkDuration"
         android:layout_width="208dp"
         android:layout_height="46dp"
         android:layout_marginStart="40dp"
@@ -80,7 +78,7 @@
         android:inputType="number"
         app:layout_constraintBottom_toTopOf="@+id/myEditTextRestPeriod"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/myTextViewSetDuration"
+        app:layout_constraintStart_toEndOf="@+id/myTextViewWorkDuration"
         app:layout_constraintTop_toBottomOf="@+id/myTextViewTitle" />
 
     <EditText
@@ -89,16 +87,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="44dp"
-        android:layout_marginBottom="30dp"
         android:ems="10"
         android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/myStartStopButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/myTextViewNumSets"
         app:layout_constraintTop_toBottomOf="@+id/myEditTextRestPeriod" />
 
     <TextView
-        android:id="@+id/myTextViewSetDuration"
+        android:id="@+id/myTextViewWorkDuration"
         android:layout_width="120dp"
         android:layout_height="50dp"
         android:layout_marginStart="9dp"
@@ -106,94 +102,25 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="7dp"
         android:gravity="bottom|left"
-        android:text="@string/SetDuration"
+        android:text="@string/WorkDuration"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/myTextViewRestDuration"
-        app:layout_constraintEnd_toStartOf="@+id/myEditTextSetDuration"
+        app:layout_constraintEnd_toStartOf="@+id/myEditTextWorkDuration"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myTextViewTitle" />
 
-    <ToggleButton
-        android:id="@+id/myStartStopButton"
-        android:layout_width="125dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="27dp"
-        android:layout_marginEnd="81dp"
-        android:layout_marginBottom="25dp"
-        android:checked="false"
-        android:text="ToggleButton"
-        android:textColor="@color/black"
-        android:textOff="@string/Start"
-        android:textOn="@string/Stop"
-        app:layout_constraintBottom_toTopOf="@+id/myTextViewPhase"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myTextViewNumSets" />
-
     <Button
-        android:id="@+id/myResetButton"
-        android:layout_width="125dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="27dp"
-        android:layout_marginEnd="81dp"
-        android:layout_marginBottom="25dp"
-        android:background="#EFEEEE"
-        android:text="RESET"
-        android:textColor="@color/black"
-        app:backgroundTint="#70D8A8"
-        app:layout_constraintBottom_toTopOf="@+id/myTextViewPhase"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myTextViewNumSets"
-        app:layout_constraintVertical_bias="0.541"/>
-
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/myProgressBar"
-        android:layout_width="153dp"
-        android:layout_height="118dp"
-        android:layout_marginStart="119dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="139dp"
-        android:layout_marginBottom="16dp"
+        android:id="@+id/myGoButton"
+        android:layout_width="240dp"
+        android:layout_height="111dp"
+        android:layout_marginStart="87dp"
+        android:layout_marginTop="99dp"
+        android:layout_marginEnd="84dp"
+        android:layout_marginBottom="214dp"
+        android:text="Button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myTextViewRemainingTime" />
-
-    <TextView
-        android:id="@+id/myTextViewRemainingTime"
-        android:layout_width="250dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="11dp"
-        android:layout_marginEnd="81dp"
-        android:layout_marginBottom="9dp"
-        android:text=""
-        android:textAlignment="center"
-        android:textSize="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/myProgressBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myTextViewPhase" />
-
-    <TextView
-        android:id="@+id/myTextViewPhase"
-        android:layout_width="350dp"
-        android:layout_height="61dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="81dp"
-        android:layout_marginBottom="6dp"
-        android:gravity="center"
-        android:textColor="@color/pink"
-        android:textSize="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/myTextViewRemainingTime"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myStartStopButton" />
+        app:layout_constraintTop_toBottomOf="@+id/myTextViewNumSets" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
