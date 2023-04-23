@@ -32,10 +32,10 @@ public class Countdown extends AppCompatActivity {
 
         myStartStopButton = findViewById(R.id.myStartStopButton);
         myResetButton = findViewById(R.id.myResetButton);
-        myResetButton.setBackgroundColor(Color.parseColor("FFD9DFDC"));
+        //myResetButton.setBackgroundColor(Color.parseColor("FFD9DFDC"));
 
         myProgressBar = findViewById(R.id.myProgressBar);
-        timerRunning = false;
+
 
         myTextViewRemainingTime = findViewById(R.id.myTextViewRemainingTime);
         myTextViewPhase = findViewById(R.id.myTextViewPhase);
@@ -43,7 +43,7 @@ public class Countdown extends AppCompatActivity {
         myButtonReturnMain = findViewById(R.id.myButtonReturnMain);
         myButtonReturnMain.setText(getString(R.string.GoCountdownToMain));
 
-        myStartStopButton.setOnClickListener(new View.OnClickListener() {
+        /*myStartStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
@@ -58,7 +58,7 @@ public class Countdown extends AppCompatActivity {
 
             }
         }
-        );
+        );*/
 /*        myResetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,7 +66,7 @@ public class Countdown extends AppCompatActivity {
             }
         });*/
         }
-        private void startWorkTimer() {
+        /*private void startWorkTimer() {
         try {
             // get intent from here for workdurationlong
             Intent workIntent = getIntent();
@@ -141,7 +141,7 @@ public class Countdown extends AppCompatActivity {
         }
 
     }
-        /*private void resetTimer () {
+        *//*private void resetTimer () {
             String setDurationStr = myEditTextSetDuration.getText().toString();
             long setDurationLong = Integer.parseInt(setDurationStr) * 1000;
             NumberFormat f = new DecimalFormat("00");

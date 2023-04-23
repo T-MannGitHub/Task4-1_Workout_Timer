@@ -3,6 +3,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -10,43 +11,14 @@ import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
-
     Button myGoQueenButton;
     TextView myTextViewTitle, myTextViewWorkDuration, myTextViewRestDuration,  myTextViewNumSets;
     EditText myEditTextWorkDuration, myEditTextRestPeriod, myEditTextNumSets;
 
-
-    int workInput;
-    int restInput;
-    int setsInput;
-
-    //String numSetsString;
-
-    //tutorial for countdown timer found at https://www.geeksforgeeks.org/countdowntimer-in-android-with-example/
-    //tutorial for pause function from https://www.youtube.com/watch?v=MDuGwI6P-X8&t=92s
     public void goQueen () {
-        try {
-            /*String workDurationStr = myEditTextWorkDuration.getText().toString();
-            long workDurationLong = Integer.parseInt(workDurationStr) * 1000;
-            workInput = Integer.parseInt(workDurationStr);
-
-            String restDurationStr = myEditTextRestPeriod.getText().toString();
-            long restDurationLong = Integer.parseInt(restDurationStr) * 1000;
-            restInput = Integer.parseInt(restDurationStr);
-
-            //numSetsString = myEditTextNumSets.getText().toString();
-            setsInput = myEditTextNumSets.getInputType();*/
-
-
             Intent intentGoQueen = new Intent(this, Countdown.class);
-            /*intentGoQueen.putExtra("workDuration", workDurationLong);
-            intentGoQueen.putExtra("restDuration", restDurationLong);*/
-            //intentGoQueen.putExtra("numSets", numSetsString);
             startActivity(intentGoQueen);
-        } catch (Exception e) {
-            Toast.makeText(MainActivity.this, "error in goQueen()", Toast.LENGTH_SHORT).show();
         }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,43 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         myGoQueenButton.setOnClickListener(v -> {
-            try {
-                goQueen();
-//                workInput();
-//                restInput();
-//                setsInput();
-            } catch (Exception e) {
-                Toast.makeText(MainActivity.this, "error in QueenOnClick", Toast.LENGTH_SHORT).show();
-            }
+            Log.v("Checking", "Button is clicked");
+            goQueen();
         });
     }
-
-    // sets the number of sets to an integer and to a long depending what we need
-   /* private void workInput () {
-        try {
-            String workDurationStr = myEditTextWorkDuration.getText().toString();
-            long workDurationLong = Integer.parseInt(workDurationStr) * 1000L;
-            workInput = Integer.parseInt(workDurationStr);
-
-        } catch (Exception e) {
-            Toast.makeText(MainActivity.this, "error in WorkInput()", Toast.LENGTH_SHORT).show();
-        }
-
-    }*/
-
-    // sets the rest duration to an integer and to a long depending what we need
-/*    private void restInput () {
-        String restDurationStr = myEditTextRestPeriod.getText().toString();
-        long restDurationLong = Integer.parseInt(restDurationStr) * 1000L;
-        restInput = Integer.parseInt(restDurationStr);
-
-    }*/
-
-    // sets the number of sets to a string and an int
-/*    private void setsInput () {
-        setsInput = myEditTextNumSets.getInputType();
-
-
-    }*/
 
 }
