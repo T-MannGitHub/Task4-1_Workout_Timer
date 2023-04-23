@@ -32,7 +32,7 @@ public class Countdown extends AppCompatActivity {
 
         myStartStopButton = findViewById(R.id.myStartStopButton);
         myResetButton = findViewById(R.id.myResetButton);
-        myResetButton.setBackgroundColor(Color.parseColor("FFD9DFDC"));
+        myResetButton.setBackgroundColor(Color.GRAY);
 
         myProgressBar = findViewById(R.id.myProgressBar);
         timerRunning = false;
