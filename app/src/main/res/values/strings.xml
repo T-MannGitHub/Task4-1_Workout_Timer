@@ -2,7 +2,7 @@
     <string name="app_name">Task4-1_Workout_Timer</string>
 
     <string name="Start">START</string>
-    <string name="Stop">STOP</string>
+    <string name="Stop">PAUSE</string>
     <string name="WorkDuration">Work Duration (sec)</string>
     <string name="RestDuration">Rest Period (sec)</string>
     <string name="NumSets">Number of Sets</string>

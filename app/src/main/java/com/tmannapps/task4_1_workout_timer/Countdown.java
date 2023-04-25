@@ -139,7 +139,9 @@ public class Countdown extends AppCompatActivity {
                 timerRunning = false;
                 j = 0;
             }
-        }.start(); }
+        }.start();
+            myStartStopButton.setText(getString(R.string.Stop));
+        }
         catch (Exception e) {
             Toast.makeText(Countdown.this, "error in setRestPhaseTimer", Toast.LENGTH_SHORT).show();
         }
@@ -148,7 +150,7 @@ public class Countdown extends AppCompatActivity {
         try {
             //pause function not working in rest phase
             workCountdownTimer.cancel();
-            //restCountdownTimer.cancel();
+            restCountdownTimer.cancel();
             timerRunning = false;
             myStartStopButton.setText(getString(R.string.Start));
             myResetButton.setBackgroundColor(Color.GRAY);
@@ -158,7 +160,7 @@ public class Countdown extends AppCompatActivity {
             long sec = (timeLeft / 1000) % 60;
             myTextViewRemainingTime.setText(f.format(hour) + ":" + f.format(min) + ":" + f.format(sec));
         } catch (Exception e) {
-            Toast.makeText(Countdown.this, "error in pauseTiemr()", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Countdown.this, "error in pauseTimer()", Toast.LENGTH_SHORT).show();
         }
 
     }
