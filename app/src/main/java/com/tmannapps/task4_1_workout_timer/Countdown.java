@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -20,13 +21,19 @@ public class Countdown extends AppCompatActivity {
     ProgressBar myProgressBar;
     CountDownTimer workCountdownTimer, restCountdownTimer;
     // CountDownTimer restCountdownTimer;
-    Boolean timerRunning = false;
-    Boolean resting = true;
+    Boolean TimerRunning = false;
+    //Boolean restTimerRunning = false;
+
     public static long timeLeft;
     public static long restLeft;
+    public static int setsLeft;
+    String numSets;
+
     int i = 0; //work iteration variable
     int j = 0; //rest iteration variable
-    TextView myTextViewRemainingTime, myTextViewPhase;
+    int setsDone = 0;
+    MediaPlayer mediaPlayer = null;
+    TextView myTextViewRemainingTime, myTextViewPhase, myTextViewSets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,21 +45,24 @@ public class Countdown extends AppCompatActivity {
         myResetButton.setBackgroundColor(Color.GRAY);
 
         myProgressBar = findViewById(R.id.myProgressBar);
-        timerRunning = false;
+        TimerRunning = false;
 
         myTextViewRemainingTime = findViewById(R.id.myTextViewRemainingTime);
         myTextViewPhase = findViewById(R.id.myTextViewPhase);
+        myTextViewSets = findViewById(R.id.myTextViewSets);
 
         myButtonReturnMain = findViewById(R.id.myButtonReturnMain);
         myButtonReturnMain.setText(getString(R.string.GoCountdownToMain));
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.sonic);
 
         myStartStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    if (!timerRunning) {
-                        startWorkTimer();
-                        i += 1;
+                    if (!TimerRunning) {
+                        //check which phase was going and start that timer
+                            startWorkTimer();
                     } else {
                         pauseTimer();
                     }
@@ -62,16 +72,19 @@ public class Countdown extends AppCompatActivity {
             }
         }
         );
+
         myResetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 resetTimer();
                 workCountdownTimer.cancel();
-                //restCountdownTimer.cancel();
+                setRestPhaseTimer(); //get a null value exception if you reset before the rest phase as the rest timer hasn't been created
+                restCountdownTimer.cancel();
                 startWorkTimer();
             }
         });
         }
+
         private void startWorkTimer() {
         try {
             // get value from main
@@ -80,15 +93,13 @@ public class Countdown extends AppCompatActivity {
                 Intent workIntent = getIntent();
                 final long[] workDurationLong = {workIntent.getLongExtra("workDuration", 0)};
                 timeLeft = workDurationLong[0];
+                getSets();
+
             }
             workCountdownTimer = new CountDownTimer(timeLeft, 1000) {
                 public void onTick(long millisUntilFinished) {
                     timeLeft = millisUntilFinished;
-                    NumberFormat f = new DecimalFormat("00");
-                    long hour = (millisUntilFinished / 3600000) % 24;
-                    long min = (millisUntilFinished/ 60000) % 60;
-                    long sec = (millisUntilFinished / 1000) % 60;
-                    myTextViewRemainingTime.setText(f.format(hour) + ":" + f.format(min) + ":" + f.format(sec));
+                    updateWorkTimer();
                     myTextViewPhase.setText(getString(R.string.WorkPhase));
                     myResetButton.setBackgroundColor(Color.GREEN);
                 }
@@ -96,16 +107,25 @@ public class Countdown extends AppCompatActivity {
                     myStartStopButton.setText(getString(R.string.Start));
                     myTextViewRemainingTime.setText(getString(R.string.endTimer));
                     setRestPhaseTimer();
+                    mediaPlayer.start();
                     i = 0;
+                    setsDone += 1;
+
                 }
             }.start();
-            timerRunning = true;
+            TimerRunning = true;
+            i += 1;
             myStartStopButton.setText(getString(R.string.Stop));
             myResetButton.setBackgroundColor(Color.GRAY);
+            myTextViewSets.setText("Sets left: " + (setsLeft));
         } catch (Exception e) {
             Toast.makeText(Countdown.this, "Error in startWorkTimer()", Toast.LENGTH_SHORT).show();
         }
-
+    }
+    private void getSets() {
+        Intent setIntent = getIntent();
+        numSets = setIntent.getStringExtra("numSets");
+        setsLeft = Integer.parseInt(numSets);
     }
     public void setRestPhaseTimer() {
         try {
@@ -116,27 +136,17 @@ public class Countdown extends AppCompatActivity {
                 restLeft = restDurationLong[0];
             }
         restCountdownTimer = new CountDownTimer(restLeft, 1000) {
-
             public void onTick(long millisUntilFinished) {
                 restLeft = millisUntilFinished;
                 updateRestTimer();
                 myTextViewPhase.setText(getString(R.string.RestPhase));
                 j += 1;
             }
-
-
-            public void updateRestTimer () {
-                NumberFormat f = new DecimalFormat("00");
-                long hour = (restLeft / 3600000) % 24;
-                long min = (restLeft / 60000) % 60;
-                long sec = (restLeft / 1000) % 60;
-                myTextViewRemainingTime.setText(f.format(hour) + ":" + f.format(min) + ":" + f.format(sec));
-            }
-
             public void onFinish() {
                 myTextViewPhase.setText(getString(R.string.EndPhase));
                 myTextViewRemainingTime.setText(getString(R.string.endTimer));
-                timerRunning = false;
+                TimerRunning = false;
+                mediaPlayer.start();
                 j = 0;
             }
         }.start();
@@ -146,23 +156,37 @@ public class Countdown extends AppCompatActivity {
             Toast.makeText(Countdown.this, "error in setRestPhaseTimer", Toast.LENGTH_SHORT).show();
         }
     }
+    public void updateWorkTimer () {
+        NumberFormat f = new DecimalFormat("00");
+        long hour = (timeLeft / 3600000) % 24;
+        long min = (timeLeft / 60000) % 60;
+        long sec = (timeLeft / 1000) % 60;
+        myTextViewRemainingTime.setText(f.format(hour) + ":" + f.format(min) + ":" + f.format(sec));
+    }
+
+    public void updateRestTimer () {
+        NumberFormat f = new DecimalFormat("00");
+        long hour = (restLeft / 3600000) % 24;
+        long min = (restLeft / 60000) % 60;
+        long sec = (restLeft / 1000) % 60;
+        myTextViewRemainingTime.setText(f.format(hour) + ":" + f.format(min) + ":" + f.format(sec));
+    }
     private void pauseTimer() {
         try {
             //pause function not working in rest phase
-            workCountdownTimer.cancel();
-            restCountdownTimer.cancel();
-            timerRunning = false;
+            if (i == 0) {
+                restCountdownTimer.cancel();
+                updateRestTimer();
+            } else if (j == 0) {
+                workCountdownTimer.cancel();
+                updateWorkTimer();
+            }
+            TimerRunning = false;
             myStartStopButton.setText(getString(R.string.Start));
             myResetButton.setBackgroundColor(Color.GRAY);
-            NumberFormat f = new DecimalFormat("00");
-            long hour = (timeLeft / 3600000) % 24;
-            long min = (timeLeft / 60000) % 60;
-            long sec = (timeLeft / 1000) % 60;
-            myTextViewRemainingTime.setText(f.format(hour) + ":" + f.format(min) + ":" + f.format(sec));
         } catch (Exception e) {
             Toast.makeText(Countdown.this, "error in pauseTimer()", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public void returnToMain (View view) {
@@ -173,7 +197,7 @@ public class Countdown extends AppCompatActivity {
             Toast.makeText(Countdown.this, "error in returnToMain()", Toast.LENGTH_SHORT).show();
         }
     }
-        private void resetTimer () {
+        private void resetTimer() {
             i = 0;
             j = 0;
         }
