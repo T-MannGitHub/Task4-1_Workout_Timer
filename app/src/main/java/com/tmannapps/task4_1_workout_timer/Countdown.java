@@ -67,6 +67,7 @@ public class Countdown extends AppCompatActivity {
             public void onClick(View v) {
                 resetTimer();
                 workCountdownTimer.cancel();
+                //restCountdownTimer.cancel();
                 startWorkTimer();
             }
         });
@@ -115,12 +116,15 @@ public class Countdown extends AppCompatActivity {
                 restLeft = restDurationLong[0];
             }
         restCountdownTimer = new CountDownTimer(restLeft, 1000) {
+
             public void onTick(long millisUntilFinished) {
                 restLeft = millisUntilFinished;
                 updateRestTimer();
                 myTextViewPhase.setText(getString(R.string.RestPhase));
                 j += 1;
             }
+
+
             public void updateRestTimer () {
                 NumberFormat f = new DecimalFormat("00");
                 long hour = (restLeft / 3600000) % 24;
@@ -144,6 +148,7 @@ public class Countdown extends AppCompatActivity {
         try {
             //pause function not working in rest phase
             workCountdownTimer.cancel();
+            //restCountdownTimer.cancel();
             timerRunning = false;
             myStartStopButton.setText(getString(R.string.Start));
             myResetButton.setBackgroundColor(Color.GRAY);
@@ -165,10 +170,10 @@ public class Countdown extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(Countdown.this, "error in returnToMain()", Toast.LENGTH_SHORT).show();
         }
-
     }
         private void resetTimer () {
             i = 0;
+            j = 0;
         }
 
 }
