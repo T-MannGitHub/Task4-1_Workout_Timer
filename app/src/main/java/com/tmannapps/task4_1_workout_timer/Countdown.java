@@ -15,19 +15,21 @@ import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-
+//Tiffany Mann TAsk 4.1 SID:221457972
 public class Countdown extends AppCompatActivity {
     Button myStartStopButton, myResetButton, myButtonReturnMain;
     ProgressBar myProgressBar;
     CountDownTimer workCountdownTimer, restCountdownTimer;
-    // CountDownTimer restCountdownTimer;
+
     Boolean TimerRunning = false;
     //Boolean restTimerRunning = false;
 
     public static long timeLeft;
     public static long restLeft;
-    public static int setsLeft;
+    public static int numSetsInt;
     String numSets;
+    public int setsLeftInt;
+    public String setsLeftString;
 
     int i = 0; //work iteration variable
     int j = 0; //rest iteration variable
@@ -60,6 +62,9 @@ public class Countdown extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    //while setsDone <= numsetsInt
+                    // run the start timer -> run rest timer
+                    // set the sets left text view to numSetsInt - setsDone
                     if (!TimerRunning) {
                         //check which phase was going and start that timer
                             startWorkTimer();
@@ -94,8 +99,8 @@ public class Countdown extends AppCompatActivity {
                 final long[] workDurationLong = {workIntent.getLongExtra("workDuration", 0)};
                 timeLeft = workDurationLong[0];
                 getSets();
-
             }
+
             workCountdownTimer = new CountDownTimer(timeLeft, 1000) {
                 public void onTick(long millisUntilFinished) {
                     timeLeft = millisUntilFinished;
@@ -104,28 +109,37 @@ public class Countdown extends AppCompatActivity {
                     myResetButton.setBackgroundColor(Color.GREEN);
                 }
                 public void onFinish() {
+                    mediaPlayer.start();
                     myStartStopButton.setText(getString(R.string.Start));
                     myTextViewRemainingTime.setText(getString(R.string.endTimer));
                     setRestPhaseTimer();
-                    mediaPlayer.start();
                     i = 0;
                     setsDone += 1;
+                    /*for (int k = 0; k < setsLeft; k ++) {
+                    startWorkTimer();
 
+                        k += 1;
+                    }*/
                 }
             }.start();
             TimerRunning = true;
             i += 1;
             myStartStopButton.setText(getString(R.string.Stop));
             myResetButton.setBackgroundColor(Color.GRAY);
-            myTextViewSets.setText("Sets left: " + (setsLeft));
-        } catch (Exception e) {
-            Toast.makeText(Countdown.this, "Error in startWorkTimer()", Toast.LENGTH_SHORT).show();
+            //myTextViewSets.setText("Sets left: " + (numSets));
+            getSets();
+        }
+        catch (Exception e) {
+            Toast.makeText(Countdown.this, "error in work countdown timer()", Toast.LENGTH_SHORT).show();
         }
     }
     private void getSets() {
         Intent setIntent = getIntent();
-        numSets = setIntent.getStringExtra("numSets");
-        setsLeft = Integer.parseInt(numSets);
+        numSets = setIntent.getStringExtra("numSets"); //from Main - user input
+        numSetsInt = Integer.parseInt(numSets); //user input sets to int so can operate
+        setsLeftInt = numSetsInt - setsDone; //calculating number of sets left to go
+        setsLeftString = String.valueOf(setsLeftInt); //turning num sets left back to string so can put in textView
+        myTextViewSets.setText("Sets left: " + setsLeftString); //sets the sets left text view to num sets left
     }
     public void setRestPhaseTimer() {
         try {
@@ -143,11 +157,16 @@ public class Countdown extends AppCompatActivity {
                 j += 1;
             }
             public void onFinish() {
-                myTextViewPhase.setText(getString(R.string.EndPhase));
+
+                getSets();
                 myTextViewRemainingTime.setText(getString(R.string.endTimer));
                 TimerRunning = false;
                 mediaPlayer.start();
                 j = 0;
+                for (int k = 0; k < setsLeftInt; k ++) {
+                    startWorkTimer();
+                    k += 1;}
+                myTextViewPhase.setText(getString(R.string.EndPhase));
             }
         }.start();
             myStartStopButton.setText(getString(R.string.Stop));
@@ -173,7 +192,7 @@ public class Countdown extends AppCompatActivity {
     }
     private void pauseTimer() {
         try {
-            //pause function not working in rest phase
+            //pause function not restarting after pause in rest phase
             if (i == 0) {
                 restCountdownTimer.cancel();
                 updateRestTimer();
@@ -193,6 +212,7 @@ public class Countdown extends AppCompatActivity {
         try {
             Intent intentReturn = new Intent (this, MainActivity.class);
             startActivity(intentReturn);
+            //mediaPlayer.release();
         } catch (Exception e) {
             Toast.makeText(Countdown.this, "error in returnToMain()", Toast.LENGTH_SHORT).show();
         }
@@ -201,5 +221,4 @@ public class Countdown extends AppCompatActivity {
             i = 0;
             j = 0;
         }
-
 }
