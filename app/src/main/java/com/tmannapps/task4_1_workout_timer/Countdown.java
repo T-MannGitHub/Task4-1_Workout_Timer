@@ -86,6 +86,9 @@ public class Countdown extends AppCompatActivity {
                 setRestPhaseTimer(); //get a null value exception if you reset before the rest phase as the rest timer hasn't been created
                 restCountdownTimer.cancel();
                 startWorkTimer();
+                myTextViewSets.setText("Sets left: " + numSets);
+                setsLeftInt = numSetsInt;
+
             }
         });
         }
@@ -106,18 +109,16 @@ public class Countdown extends AppCompatActivity {
                     timeLeft = millisUntilFinished;
                     updateWorkTimer();
                     myTextViewPhase.setText(getString(R.string.WorkPhase));
-                    myResetButton.setBackgroundColor(Color.GREEN);
                 }
                 public void onFinish() {
                     mediaPlayer.start();
                     myStartStopButton.setText(getString(R.string.Start));
                     myTextViewRemainingTime.setText(getString(R.string.endTimer));
+                    setsDone += 1;
                     setRestPhaseTimer();
                     i = 0;
-                    setsDone += 1;
                     /*for (int k = 0; k < setsLeft; k ++) {
                     startWorkTimer();
-
                         k += 1;
                     }*/
                 }
@@ -125,9 +126,8 @@ public class Countdown extends AppCompatActivity {
             TimerRunning = true;
             i += 1;
             myStartStopButton.setText(getString(R.string.Stop));
-            myResetButton.setBackgroundColor(Color.GRAY);
             //myTextViewSets.setText("Sets left: " + (numSets));
-            getSets();
+            //getSets();
         }
         catch (Exception e) {
             Toast.makeText(Countdown.this, "error in work countdown timer()", Toast.LENGTH_SHORT).show();
@@ -140,6 +140,7 @@ public class Countdown extends AppCompatActivity {
         setsLeftInt = numSetsInt - setsDone; //calculating number of sets left to go
         setsLeftString = String.valueOf(setsLeftInt); //turning num sets left back to string so can put in textView
         myTextViewSets.setText("Sets left: " + setsLeftString); //sets the sets left text view to num sets left
+
     }
     public void setRestPhaseTimer() {
         try {
@@ -154,11 +155,10 @@ public class Countdown extends AppCompatActivity {
                 restLeft = millisUntilFinished;
                 updateRestTimer();
                 myTextViewPhase.setText(getString(R.string.RestPhase));
-                j += 1;
+
             }
             public void onFinish() {
-
-                getSets();
+                //getSets(); comment out, no change.
                 myTextViewRemainingTime.setText(getString(R.string.endTimer));
                 TimerRunning = false;
                 mediaPlayer.start();
@@ -166,10 +166,11 @@ public class Countdown extends AppCompatActivity {
                 for (int k = 0; k < setsLeftInt; k ++) {
                     startWorkTimer();
                     k += 1;}
-                myTextViewPhase.setText(getString(R.string.EndPhase));
+                //myTextViewPhase.setText(getString(R.string.EndPhase));
             }
         }.start();
             myStartStopButton.setText(getString(R.string.Stop));
+            j += 1;
         }
         catch (Exception e) {
             Toast.makeText(Countdown.this, "error in setRestPhaseTimer", Toast.LENGTH_SHORT).show();
@@ -202,7 +203,6 @@ public class Countdown extends AppCompatActivity {
             }
             TimerRunning = false;
             myStartStopButton.setText(getString(R.string.Start));
-            myResetButton.setBackgroundColor(Color.GRAY);
         } catch (Exception e) {
             Toast.makeText(Countdown.this, "error in pauseTimer()", Toast.LENGTH_SHORT).show();
         }
