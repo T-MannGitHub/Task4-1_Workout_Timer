@@ -15,15 +15,13 @@ import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-//Tiffany Mann TAsk 4.1 SID:221457972
+
+//Tiffany Mann Task 4.1 SID:221457972
 public class Countdown extends AppCompatActivity {
     Button myStartStopButton, myResetButton, myButtonReturnMain;
     ProgressBar myProgressBar;
     CountDownTimer workCountdownTimer, restCountdownTimer;
-
     Boolean TimerRunning = false;
-    //Boolean restTimerRunning = false;
-
     public static long timeLeft;
     public static long restLeft;
     public static int numSetsInt;
@@ -45,7 +43,6 @@ public class Countdown extends AppCompatActivity {
 
         myStartStopButton = findViewById(R.id.myStartStopButton);
         myResetButton = findViewById(R.id.myResetButton);
-        //myResetButton.setBackgroundColor(Color.GRAY);
 
         myProgressBar = findViewById(R.id.myProgressBar);
         TimerRunning = false;
@@ -69,7 +66,6 @@ public class Countdown extends AppCompatActivity {
                     if (!TimerRunning) {
                         //check which phase was going and start that timer TODO
                             startWorkTimer();
-                            //runWorkRest();
                     } else {
                         pauseTimer();
                     }
@@ -91,14 +87,10 @@ public class Countdown extends AppCompatActivity {
                 startWorkTimer();
                 myTextViewSets.setText("Sets left: " + numSets);
                 setsLeftInt = numSetsInt;
-
             }
         });
         }
-/*        private void runWorkRest() {
-            startWorkTimer();
-            setRestPhaseTimer();
-        }*/
+
         private void startWorkTimer() {
         try {
             // get value from main
@@ -125,17 +117,12 @@ public class Countdown extends AppCompatActivity {
                     setRestPhaseTimer();
                     progress = (setsDone%numSetsInt)*100;
                     myProgressBar.incrementProgressBy(progress);
-                    /*for (int k = 0; k < setsLeft; k ++) {
-                    startWorkTimer();
-                        k += 1;
-                    }*/
+
                 }
             }.start();
             TimerRunning = true;
             i += 1;
             myStartStopButton.setText(getString(R.string.Stop));
-            //myTextViewSets.setText("Sets left: " + (numSets));
-            //getSets();
         }
         catch (Exception e) {
             Toast.makeText(Countdown.this, "error in work countdown timer()", Toast.LENGTH_SHORT).show();
@@ -148,7 +135,6 @@ public class Countdown extends AppCompatActivity {
         setsLeftInt = numSetsInt - setsDone; //calculating number of sets left to go
         setsLeftString = String.valueOf(setsLeftInt); //turning num sets left back to string so can put in textView
         myTextViewSets.setText("Sets left: " + setsLeftString); //sets the sets left text view to num sets left
-
     }
     public void setRestPhaseTimer() {
         try {
@@ -163,10 +149,8 @@ public class Countdown extends AppCompatActivity {
                 restLeft = millisUntilFinished;
                 updateRestTimer();
                 myTextViewPhase.setText(getString(R.string.RestPhase));
-
             }
             public void onFinish() {
-                //getSets(); //comment out, no change.
                 myTextViewRemainingTime.setText(getString(R.string.endTimer));
                 TimerRunning = false;
                 mediaPlayer.start();
@@ -175,7 +159,6 @@ public class Countdown extends AppCompatActivity {
                 for (int k = 1; k < setsLeftInt; k ++) {
                     startWorkTimer();
                     k += 1;}
-                //myTextViewPhase.setText(getString(R.string.EndPhase));
             }
         }.start();
             myStartStopButton.setText(getString(R.string.Stop));
@@ -202,7 +185,7 @@ public class Countdown extends AppCompatActivity {
     }
     private void pauseTimer() {
         try {
-            //pause function not restarting after pause in rest phase
+            //pause function not restarting after pause in rest phase: TODO
             if (i == 0) {
                 restCountdownTimer.cancel();
                 updateRestTimer();
