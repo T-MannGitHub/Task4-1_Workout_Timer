@@ -36,6 +36,7 @@ public class Countdown extends AppCompatActivity {
     int setsDone = 0;
     MediaPlayer mediaPlayer = null;
     TextView myTextViewRemainingTime, myTextViewPhase, myTextViewSets;
+    int progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,7 @@ public class Countdown extends AppCompatActivity {
 
         myStartStopButton = findViewById(R.id.myStartStopButton);
         myResetButton = findViewById(R.id.myResetButton);
-        myResetButton.setBackgroundColor(Color.GRAY);
+        //myResetButton.setBackgroundColor(Color.GRAY);
 
         myProgressBar = findViewById(R.id.myProgressBar);
         TimerRunning = false;
@@ -66,8 +67,9 @@ public class Countdown extends AppCompatActivity {
                     // run the start timer -> run rest timer
                     // set the sets left text view to numSetsInt - setsDone
                     if (!TimerRunning) {
-                        //check which phase was going and start that timer
+                        //check which phase was going and start that timer TODO
                             startWorkTimer();
+                            //runWorkRest();
                     } else {
                         pauseTimer();
                     }
@@ -82,9 +84,10 @@ public class Countdown extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 resetTimer();
+                if (TimerRunning){
                 workCountdownTimer.cancel();
                 setRestPhaseTimer(); //get a null value exception if you reset before the rest phase as the rest timer hasn't been created
-                restCountdownTimer.cancel();
+                restCountdownTimer.cancel();}
                 startWorkTimer();
                 myTextViewSets.setText("Sets left: " + numSets);
                 setsLeftInt = numSetsInt;
@@ -92,7 +95,10 @@ public class Countdown extends AppCompatActivity {
             }
         });
         }
-
+/*        private void runWorkRest() {
+            startWorkTimer();
+            setRestPhaseTimer();
+        }*/
         private void startWorkTimer() {
         try {
             // get value from main
@@ -115,8 +121,10 @@ public class Countdown extends AppCompatActivity {
                     myStartStopButton.setText(getString(R.string.Start));
                     myTextViewRemainingTime.setText(getString(R.string.endTimer));
                     setsDone += 1;
-                    setRestPhaseTimer();
                     i = 0;
+                    setRestPhaseTimer();
+                    progress = (setsDone%numSetsInt)*100;
+                    myProgressBar.incrementProgressBy(progress);
                     /*for (int k = 0; k < setsLeft; k ++) {
                     startWorkTimer();
                         k += 1;
@@ -158,12 +166,13 @@ public class Countdown extends AppCompatActivity {
 
             }
             public void onFinish() {
-                //getSets(); comment out, no change.
+                //getSets(); //comment out, no change.
                 myTextViewRemainingTime.setText(getString(R.string.endTimer));
                 TimerRunning = false;
                 mediaPlayer.start();
                 j = 0;
-                for (int k = 0; k < setsLeftInt; k ++) {
+                getSets();
+                for (int k = 1; k < setsLeftInt; k ++) {
                     startWorkTimer();
                     k += 1;}
                 //myTextViewPhase.setText(getString(R.string.EndPhase));
